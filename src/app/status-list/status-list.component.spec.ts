@@ -10,7 +10,7 @@ describe('StatusListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [StatusListComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(StatusListComponent);
     component = fixture.componentInstance;
@@ -20,4 +20,9 @@ describe('StatusListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have title', () => {
+    const compiled = fixture.nativeElement as HTMLElement
+    expect(compiled.querySelector(".page-title")?.textContent).toContain("Employee Status List")
+  })
 });
