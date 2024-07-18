@@ -1,16 +1,31 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EmployeeStatusService, GetEmployeeStatusesResponse, GraphQLResp } from './employee-status.service';
+import { EmployeeStatusService, GetEmployeeStatusesResponse, GraphQLResp, CreateEmployeeStatStatus } from './employee-status.service';
+import { EmployeeStatus } from './employee-status';
 
 describe('EmployeeStatusService', () => {
   let service: EmployeeStatusService;
+
+  let dummyEmployeeStatus: EmployeeStatus = {
+    createdAt: 1719822909024,
+    createdBy: null,
+    duration: null,
+    employeeStatusName: "Permanent",
+    employeeStatusType: "PKWTT",
+    id: "01906d6e-fe56-72ff-a2c1-796a756959c3",
+    isPKWTCompensation: null,
+    isProbation: false,
+    isUsed: true,
+    updatedAt: 1719822909024,
+    updatedBy: null
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(EmployeeStatusService);
   });
 
-  it('should return a list of employee statuses', async () => {
+  it('get should return a list of employee statuses', async () => {
     const dummyResponse: GraphQLResp<GetEmployeeStatusesResponse> = {
       data: {
         employeeStatuses: [
@@ -56,7 +71,30 @@ describe('EmployeeStatusService', () => {
     }
 
     spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
-    expect(await service.getEmployeeStatuses()).toThrow(new Error(dummyResponse.error!.message))
+    await expectAsync(service.getEmployeeStatuses()).toBeRejectedWithError()
+  })
+
+  it('create should return true if success', async () => {
+    const dummyResponse: GraphQLResp<CreateEmployeeStatStatus> = {
+      data: {
+        createEmployeeStatuses: true
+      }
+    }
+
+    spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
+    const res = await service.createEmployeeStatus(dummyEmployeeStatus)
+    expect(res).toBeTrue()
+  })
+
+  it('create should throw error if failed', async () => {
+    const dummyResponse: GraphQLResp<GetEmployeeStatusesResponse> = {
+      error: {
+        message: "error gilimanuk"
+      }
+    }
+
+    spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
+    await expectAsync(service.createEmployeeStatus(dummyEmployeeStatus)).toBeRejectedWithError()
   })
 
 });
