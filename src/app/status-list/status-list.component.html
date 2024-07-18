@@ -1,0 +1,63 @@
+<div class="container">
+  <section class="toolbar">
+    <p>Employee Status List</p>
+    <dx-button
+      text="Add"
+      (onClick)="onCreateClick()"
+      stylingMode="contained"
+      type="success"
+    ></dx-button>
+  </section>
+  <section class="status-items">
+    <dx-data-grid
+      title="Employee Status"
+      class="table"
+      [dataSource]="employeeStatuses"
+      keyExpr="id"
+      [showBorders]="true"
+      (onRowRemoving)="deleteItem($event)"
+      (onRowInserting)="createItem($event)"
+      (onRowUpdating)="updateItem($event)"
+    >
+      <dxo-form>
+        <dxi-item></dxi-item>
+      </dxo-form>
+      <dxo-filter-row visible="true" applyFilter="auto"></dxo-filter-row>
+      <dxi-column dataField="employeeStatusName" [fixed]="true">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column dataField="employeeStatusType">
+        <dxo-lookup
+          [dataSource]="employeeTypeLookupData"
+          valueExpr="id"
+          displayExpr="display"
+        >
+        </dxo-lookup>
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column dataField="duration">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column
+        [allowEditing]="false"
+        caption="Description"
+        [calculateCellValue]="getDescription"
+      >
+      </dxi-column>
+      <dxi-column [visible]="false" dataField="isProbation"> </dxi-column>
+      <dxi-column [visible]="false" dataField="isPKWTCompensation">
+      </dxi-column>
+      <dxo-editing
+        mode="form"
+        [useIcons]="true"
+        [allowUpdating]="true"
+        [allowDeleting]="true"
+      ></dxo-editing>
+    </dx-data-grid>
+  </section>
+  <dx-toast
+    [visible]="toastInfo.isVisible"
+    [message]="toastInfo.message"
+    [type]="toastInfo.type"
+  ></dx-toast>
+</div>
