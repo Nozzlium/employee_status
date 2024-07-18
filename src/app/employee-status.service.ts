@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EmployeeStatus } from './employee-status';
 
-interface GraphQLResp<T> {
+export interface GraphQLResp<T> {
   data?: T
   error?: GraphQLError
 }

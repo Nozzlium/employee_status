@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { EmployeeStatusService, GraphQLResp } from './employee-status.service';
 import { Pipe } from '@angular/core';
+import { EmployeeStatus } from './employee-status';
 
 describe('EmployeeStatusService', () => {
   let service: EmployeeStatusService;
@@ -50,7 +51,7 @@ describe('EmployeeStatusService', () => {
   })
 
   it('get should throw an exception if server returns error', async () => {
-    const dummyResponse: GraphQLResp = {
+    const dummyResponse: GraphQLResp<EmployeeStatus[]> = {
       error: {
         message: "error"
       }
