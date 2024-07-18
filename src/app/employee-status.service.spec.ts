@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EmployeeStatusService, GraphQLResp } from './employee-status.service';
-import { Pipe } from '@angular/core';
-import { EmployeeStatus } from './employee-status';
+import { EmployeeStatusService, GetEmployeeStatusesResponse, GraphQLResp } from './employee-status.service';
 
 describe('EmployeeStatusService', () => {
   let service: EmployeeStatusService;
@@ -13,7 +11,7 @@ describe('EmployeeStatusService', () => {
   });
 
   it('should return a list of employee statuses', async () => {
-    const dummyResponse: GraphQLResp = {
+    const dummyResponse: GraphQLResp<GetEmployeeStatusesResponse> = {
       data: {
         employeeStatuses: [
           {
@@ -47,18 +45,18 @@ describe('EmployeeStatusService', () => {
     }
     spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
     const res = await service.getEmployeeStatuses()
-    expect(res).toBe(dummyResponse.employeeStatuses)
+    expect(res).toBe(dummyResponse.data!.employeeStatuses)
   })
 
   it('get should throw an exception if server returns error', async () => {
-    const dummyResponse: GraphQLResp<EmployeeStatus[]> = {
+    const dummyResponse: GraphQLResp<GetEmployeeStatusesResponse> = {
       error: {
-        message: "error"
+        message: "error gilimanuk"
       }
     }
 
     spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
-    expect(await service.getEmployeeStatuses()).toThrow(new Error(dummyResponse.error.message))
+    expect(await service.getEmployeeStatuses()).toThrow(new Error(dummyResponse.error!.message))
   })
 
 });
