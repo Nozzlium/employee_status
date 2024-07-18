@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EmployeeStatusService, GetEmployeeStatusesResponse, GraphQLResp, CreateEmployeeStatStatus } from './employee-status.service';
+import { EmployeeStatusService, GetEmployeeStatusesResponse, GraphQLResp, CreateEmployeeStatStatus, UpdateEmployeeStatus, DeleteEmployeeStatusResponse } from './employee-status.service';
 import { EmployeeStatus } from './employee-status';
 
 describe('EmployeeStatusService', () => {
@@ -95,6 +95,53 @@ describe('EmployeeStatusService', () => {
 
     spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
     await expectAsync(service.createEmployeeStatus(dummyEmployeeStatus)).toBeRejectedWithError()
+  })
+
+  it('update should return true if succeeds', async () => {
+    const dummyResponse: GraphQLResp<UpdateEmployeeStatus> = {
+      data: {
+        updateEmployeeStatus: true
+      }
+    }
+
+    spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
+    const res = await service.updateEmployeeStatus(dummyEmployeeStatus)
+    expect(res).toBeTrue()
+  })
+
+  it('update should throw and error if fails', async () => {
+    const dummyResponse: GraphQLResp<UpdateEmployeeStatus> = {
+      error: {
+        message: "error gilimanuk"
+      }
+    }
+
+    spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
+    await expectAsync(service.updateEmployeeStatus(dummyEmployeeStatus)).toBeRejectedWithError()
+
+  })
+
+  it('delete should return true if succeeds', async () => {
+    const dummyResponse: GraphQLResp<DeleteEmployeeStatusResponse> = {
+      data: {
+        deleteEmployeeStatus: true
+      }
+    }
+    spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
+    const res = await service.deleteEmployeeStatus(dummyEmployeeStatus.id)
+    expect(res).toBeTrue()
+  })
+
+  it('delete should throw and error if fails', async () => {
+    const dummyResponse: GraphQLResp<DeleteEmployeeStatusResponse> = {
+      error: {
+        message: "error gilimanuk"
+      }
+    }
+
+    spyOn(service, 'graphQLFetch').and.resolveTo(dummyResponse)
+    await expectAsync(service.deleteEmployeeStatus(dummyEmployeeStatus.id)).toBeRejectedWithError()
+
   })
 
 });
