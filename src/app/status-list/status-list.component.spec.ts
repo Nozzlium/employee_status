@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatusListComponent } from './status-list.component';
 import { EmployeeStatusService } from '../employee-status.service';
-import jasmine from 'jasmine';
 
 describe('StatusListComponent', () => {
   let service: EmployeeStatusService
@@ -10,6 +9,7 @@ describe('StatusListComponent', () => {
   let fixture: ComponentFixture<StatusListComponent>;
 
   beforeEach(async () => {
+    jasmine.clock().install()
     await TestBed.configureTestingModule({
       imports: [StatusListComponent]
     })
@@ -20,6 +20,9 @@ describe('StatusListComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+  afterEach(async () => {
+    jasmine.clock().uninstall()
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -33,6 +36,7 @@ describe('StatusListComponent', () => {
   it('should render as many rows as employee status items', async () => {
     const compiled = fixture.nativeElement
     const res = await service.getEmployeeStatuses()
+    jasmine.clock().tick(500)
     expect(compiled.querySelectorAll('.dx-data-row').length).toBe(res.length)
   })
 });
