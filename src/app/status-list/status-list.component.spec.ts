@@ -33,10 +33,22 @@ describe('StatusListComponent', () => {
     expect(compiled.querySelector(".page-title")?.textContent).toContain("Employee Status List")
   })
 
+  it('should spawn a creation form when the create button is clicked', async () => {
+    const compiled = fixture.nativeElement as HTMLElement
+    const button = compiled.querySelector('.create-button') as HTMLButtonElement
+
+    button.click()
+
+    await fixture.whenStable()
+
+    console.log(compiled.innerHTML)
+    expect(compiled.querySelector('.dx-form')).toBeTruthy()
+  })
+
   it('should render as many rows as employee status items', async () => {
-    const compiled = fixture.nativeElement
+    const compiled = fixture.nativeElement as HTMLElement
+    jasmine.clock().tick(1000)
     const res = await service.getEmployeeStatuses()
-    jasmine.clock().tick(500)
     expect(compiled.querySelectorAll('.dx-data-row').length).toBe(res.length)
   })
 });

@@ -121,7 +121,7 @@ export class EmployeeStatusService {
   async graphQLFetch<T>(url: string, query: string, variables: {}): Promise<GraphQLResp<T>> {
     const res = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'CustomerId': '_d97njgf5objr8ftoxas7sp1heh' },
+      headers: { 'Content-Type': 'application/json', 'CustomerId': '[CUSTOMER_ID]' },
       body: JSON.stringify({ query, variables })
     })
 
